@@ -1,46 +1,178 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>科学电磁炮的个人主页</title>
-<style>body{font-family:Poppins,sans-serif;margin:0;padding:0;}header{background-color:#333;padding:20px;text-align:center;}nav{display:flex;justify-content:center;margin-top:20px;}nav a{margin:0 10px;color:#fff;text-decoration:none;padding:5px;border-radius:5px;background-color:#666;}nav a:hover{background-color:#999;}nav .active{background-color:#00bcd4;}.container{max-width:800px;margin:20px auto;padding:0 20px;}h1{margin-top:0;color:white;}.page{display:none;}.page-active{display:block;}</style>
-<script>function showPage(pageId) {var pages =document.getElementsByClassName('page');for (var i =0;i < pages.length;i++) {pages[i].classList.remove('page-active');}
- var page =document.getElementById(pageId);page.classList.add('page-active');var links =document.getElementsByTagName('a');for (var i =0;i < links.length;i++) {links[i].classList.remove('active');}
-var activeLink =document.getElementById(pageId + '-link');activeLink.classList.add('active');}
-</script>
+    <title>博客网页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: #666;
+            color:white;
+        }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .post-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .post-content {
+            color: #666;
+        }
+
+        .input-container {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .fade-in-out {
+            animation: fadeInOut 1s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+    <script>
+        // 模拟博客文章数据
+        var blogPosts = [
+            {title: "文章1", content: "这是文章1的内容。"},
+            {title: "文章2", content: "这是文章2的内容。"},
+            {title: "文章3", content: "这是文章3的内容。"}
+        ];
+
+        function displayPosts() {
+            var postsContainer = document.getElementById('posts');
+            postsContainer.innerHTML = "";
+
+            for (var i = 0; i < blogPosts.length; i++) {
+                var post = blogPosts[i];
+                var postElement = document.createElement('li');
+                var postLink = document.createElement('a');
+                postLink.href = '#';
+                postLink.innerHTML = post.title;
+                postLink.setAttribute('onclick', 'displayPost(' + i + ')');
+
+                postElement.appendChild(postLink);
+                postsContainer.appendChild(postElement);
+            }
+        }
+
+        function displayPost(index) {
+    var post = blogPosts[index];
+    var postTitle = document.getElementById('post-title');
+    var postContent = document.getElementById('post-content');
+
+    postTitle.classList.add('fade-in-out');
+    postContent.classList.add('fade-in-out');
+
+    setTimeout(function() {
+        postTitle.innerHTML = post.title;
+        postContent.innerHTML = post.content.replace(/\n/g, "<br>");
+
+        postTitle.classList.remove('fade-in-out');
+        postContent.classList.remove('fade-in-out');
+    }, 500);
+}
+
+        function addPost() {
+            var title = document.getElementById('new-title').value;
+            var content = document.getElementById('new-content').value;
+
+            var newPost = {title: title, content: content};
+            blogPosts.push(newPost);
+
+            document.getElementById('new-title').value = "";
+            document.getElementById('new-content').value = "";
+
+            displayPosts();
+        }
+
+        function deletePost() {
+            var index = document.getElementById('delete-index').value;
+
+            if (index >= 0 && index < blogPosts.length) {
+                blogPosts.splice(index, 1);
+            }
+
+            document.getElementById('delete-index').value = "";
+
+            displayPosts();
+        }
+    </script>
 </head>
 <body>
-<header>
-<h1>科学电磁炮的博客（？）</h1>
-<nav>
-<a id="home-link" href="#" onclick="showPage('home')">主页</a>
-<a id="blog-link" href="#" onclick="showPage('blog')">博客</a>
-<a id="contact-link" href="#" onclick="showPage('contact')">联系</a>
-</nav>
-</header>
-<div class="container">
-<div id="home" class="page page-active">
-<h2>欢迎来到我的网站！</h2>
-<p>这是我的网站首页。请点击以上按钮查看其他页面。</p>
-<p>没错，前面那段话是我偷懒让ChatGPT写的（逃</p>
-<p>啊实际上整个HTML框架都是GPT弄的（光速逃</p>
-</div>
-<div id="blog" class="page">
-<h2>博客</h2>
-<div class="blog-post">
-<h3>我的作品（1）</h3>
-<a href="https://sway.office.com/yXOK7olKkq0SckuL">穿越日记（正在持续更新，阅读可能需要科学上网）</a>
-</div>
-<h3>我的作品（2）</h3>
-<a href="https://1drv.ms/w/s!AkgJ_VJ7BeKqu3FBUB_VQAIRK-Eq?e=G6VGuP">微软航空怪谈（正在持续更新，阅读需要科学上网）</a>
-</div>
-<div id="contact" class="page">
-<h2>联系</h2>
-<p>QQ:3128411460</p>
-<p>如有问题或者催更作品请QQ联系我（不要发QQ邮箱，那玩意我不常看）</p>
-</div>
-</div>
-<script>showPage('home');</script>
+    <h1>我的博客</h1>
+
+    <h2>文章列表</h2>
+    <ul id="posts"></ul>
+
+    <div>
+        <h2>显示文章</h2>
+        <h3 id="post-title"></h3>
+        <p id="post-content"></p>
+    </div>
+
+    <div class="input-container">
+        <h2>新增文章</h2>
+        <input type="text" id="new-title" placeholder="标题"><br>
+        <textarea id="new-content" placeholder="内容"></textarea><br>
+        <button onclick="addPost()">新增</button>
+    </div>
+
+    <div class="input-container">
+        <h2>删除文章</h2>
+        <input type="text" id="delete-index" placeholder="文章索引"><br>
+        <button onclick="deletePost()">删除</button>
+    </div>
+
+    <script>displayPosts();</script>
 </body>
 </html>
