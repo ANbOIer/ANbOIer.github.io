@@ -1,164 +1,187 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>博客</title>
-</head>
+    <title>博客网页</title>
     <style>
         body {
-            font-family: Poppins, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
-
         header {
             background-color: #333;
             padding: 20px;
             text-align: center;
         }
 
-        nav {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        nav a {
-            margin: 0 10px;
-            color: #fff;
-            text-decoration: none;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #666;
-        }
-
-        nav a:hover {
-            background-color: #999;
-        }
-
-        nav .active {
-            background-color: #00bcd4;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
+        h1, h2, h3 {
+            color: #333;
         }
 
         h1 {
-            margin-top: 0;
+            text-align: center;
+            margin-bottom: 30px;
             color:white;
         }
 
-        .page {
-            display: none;
+        h2 {
+            margin-top: 40px;
         }
 
-        .page-active {
-            display: block;
+        h3 {
+            color:white;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .post-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .post-content {
+            color: #666;
+        }
+
+        .input-container {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .fade-in-out {
+            animation: fadeInOut 1s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
+    <script>
+        // 模拟博客文章数据
+        var blogPosts = [
+            {title: "文章1", content: "这是文章1的内容。"},
+            {title: "文章2", content: "这是文章2的内容。"},
+            {title: "文章3", content: "这是文章3的内容。"}
+        ];
+
+        function displayPosts() {
+            var postsContainer = document.getElementById('posts');
+            postsContainer.innerHTML = "";
+
+            for (var i = 0; i < blogPosts.length; i++) {
+                var post = blogPosts[i];
+                var postElement = document.createElement('li');
+                var postLink = document.createElement('a');
+                postLink.href = '#';
+                postLink.innerHTML = post.title;
+                postLink.setAttribute('onclick', 'displayPost(' + i + ')');
+
+                postElement.appendChild(postLink);
+                postsContainer.appendChild(postElement);
+            }
+        }
+
+        function displayPost(index) {
+    var post = blogPosts[index];
+    var postTitle = document.getElementById('post-title');
+    var postContent = document.getElementById('post-content');
+
+    postTitle.classList.add('fade-in-out');
+    postContent.classList.add('fade-in-out');
+
+    setTimeout(function() {
+        postTitle.innerHTML = post.title;
+        postContent.innerHTML = post.content.replace(/\n/g, "<br>");
+
+        postTitle.classList.remove('fade-in-out');
+        postContent.classList.remove('fade-in-out');
+    }, 500);
+}
+
+        function addPost() {
+            var title = document.getElementById('new-title').value;
+            var content = document.getElementById('new-content').value;
+
+            var newPost = {title: title, content: content};
+            blogPosts.push(newPost);
+
+            document.getElementById('new-title').value = "";
+            document.getElementById('new-content').value = "";
+
+            displayPosts();
+        }
+
+        function deletePost() {
+            var index = document.getElementById('delete-index').value;
+
+            if (index >= 0 && index < blogPosts.length) {
+                blogPosts.splice(index, 1);
+            }
+
+            document.getElementById('delete-index').value = "";
+
+            displayPosts();
+        }
+    </script>
+</head>
 <body>
     <header>
-        <h1>我的博客</h1>
+        <h1>我的个人主页</h1>
+        <h3>实际上整个框架都是GPT做的（逃</h3>
     </header>
-    <div id="articles">
-        <!-- 动态生成博文列表 -->
+    <h2>文章列表</h2>
+    <ul id="posts"></ul>
+
+    <div>
+        <h2>显示文章</h2>
+        <h3 id="post-title"></h3>
+        <p id="post-content"></p>
     </div>
 
-    <hr>
+    <div class="input-container">
+        <h2>新增文章</h2>
+        <input type="text" id="new-title" placeholder="标题"><br>
+        <textarea id="new-content" placeholder="内容"></textarea><br>
+        <button onclick="addPost()">新增</button>
+    </div>
 
-    <h3>添加博文</h3>
-    <!-- IP 识别仅限特定 IP 可以增加博文 -->
-    <form id="addForm">
-        <input type="text" id="titleInput" placeholder="标题" required><br>
-        <textarea id="contentInput" placeholder="内容" required></textarea><br>
-        <input type="submit" value="提交">
-    </form>
+    <div class="input-container">
+        <h2>删除文章</h2>
+        <input type="text" id="delete-index" placeholder="文章索引"><br>
+        <button onclick="deletePost()">删除</button>
+    </div>
 
-    <hr>
-
-    <h3>删除博文</h3>
-    <!-- IP 识别仅限特定 IP 可以删除博文 -->
-    <form id="deleteForm">
-        <input type="number" id="deleteIndex" placeholder="要删除的博文索引" required><br>
-        <input type="submit" value="提交">
-    </form>
-
-    <script>
-        // 存储博文数据的数组
-        let articles = [];
-
-        // 渲染博文列表
-        function renderArticles() {
-            const articlesDiv = document.getElementById('articles');
-            articlesDiv.innerHTML = '';
-
-            for (let i = 0; i < articles.length; i++) {
-                const article = articles[i];
-                const articleDiv = document.createElement('div');
-                articleDiv.innerHTML = `
-                    <h3>${article.title}</h3>
-                    <p>${article.content}</p>
-                    <hr>
-                `;
-                articlesDiv.appendChild(articleDiv);
-            }
-        }
-
-        // 添加博文
-        function addArticle(event) {
-            event.preventDefault();
-
-            const title = document.getElementById('titleInput').value;
-            const content = document.getElementById('contentInput').value;
-
-            // 添加 IP 识别逻辑
-            const ipAddress = "{{ip-address}}"; // 替换为获取客户端 IP 的方法
-            const allowedIPs = ['119.163.8.59', '10.0.0.1']; // 在此处定义允许的 IP 列表
-
-            if (allowedIPs.includes(ipAddress)) {
-                // IP 符合要求，可以添加博文
-                articles.push({ title, content });
-                renderArticles();
-                document.getElementById('addForm').reset();
-            } else {
-                // IP 不符合要求，弹出提示
-                alert('您没有权限添加博文！');
-            }
-        }
-
-        // 删除博文
-        function deleteArticle(event) {
-            event.preventDefault();
-
-            const index = document.getElementById('deleteIndex').value;
-
-            // 添加 IP 识别逻辑（与添加博文类似）
-            const ipAddress = "{{ip-address}}"; // 替换为获取客户端 IP 的方法
-            const allowedIPs = ['119.163.8.59', '10.0.0.1']; // 在此处定义允许的 IP 列表
-
-            if (allowedIPs.includes(ipAddress)) {
-                // IP 符合要求，可以删除博文
-                if (index >= 0 && index < articles.length) {
-                    articles.splice(index, 1);
-                    renderArticles();
-                    document.getElementById('deleteForm').reset();
-                } else {
-                    alert('请输入有效的博文索引！');
-                }
-            } else {
-                // IP 不符合要求，弹出提示
-                alert('您没有权限删除博文！');
-            }
-        }
-
-        // 监听添加博文表单提交事件
-        document.getElementById('addForm').addEventListener('submit', addArticle);
-
-        // 监听删除博文表单提交事件
-        document.getElementById('deleteForm').addEventListener('submit', deleteArticle);
-    </script>
+    <script>displayPosts();</script>
 </body>
 </html>
